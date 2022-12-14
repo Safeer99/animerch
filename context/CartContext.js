@@ -6,6 +6,7 @@ const Cart = createContext();
 const CartContext = ({ children }) => {
     const [cart, setCart] = useState({});
     const [subTotal, setSubTotal] = useState(0);
+    const [user, setUser] = useState({ value: null });
     const router = useRouter()
 
     useEffect(() => {
@@ -17,7 +18,16 @@ const CartContext = ({ children }) => {
         } catch (err) {
             localStorage.clear()
         }
-    }, [])
+        const token = localStorage.getItem("token");
+        if (token) {
+            setUser({ value: token })
+        }
+    }, [router.query])
+
+    const logout = () => {
+        localStorage.removeItem('token');
+        setUser({ value: null });
+    }
 
     const saveCart = (myCart) => {
         localStorage.setItem("cart", JSON.stringify(myCart))
@@ -65,7 +75,7 @@ const CartContext = ({ children }) => {
     }
 
     return (
-        <Cart.Provider value={{ addToCart, removeFromCart, buyNow, clearCart, subTotal, cart }}>
+        <Cart.Provider value={{ logout, user, addToCart, removeFromCart, buyNow, clearCart, subTotal, cart }}>
             {children}
         </Cart.Provider>
     )

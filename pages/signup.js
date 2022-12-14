@@ -1,11 +1,70 @@
 import Link from 'next/link'
-import React from 'react'
-
+import Router, { useRouter } from 'next/router';
+import React, { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
+
+    const router = useRouter();
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [rePassword, setRePassword] = useState('');
+
+    const handleChange = (e) => {
+        if (e.target.name == "name") { setName(e.target.value) }
+        else if (e.target.name == "email") { setEmail(e.target.value) }
+        else if (e.target.name == "password") { setPassword(e.target.value) }
+        else if (e.target.name == "rePassword") { setRePassword(e.target.value) }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const data = { name, email, password }
+        let res = await fetch('http://localhost:3000/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        let response = await res.json();
+        setName('')
+        setEmail('')
+        setPassword('')
+        setRePassword('')
+        toast.success('Successfully Signup', {
+            position: "top-right",
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+        setTimeout(() => {
+            router.push('/login')
+        }, 1500);
+    }
+
     return (
         <section>
             <div className="px-6 h-full text-gray-800">
+                <ToastContainer
+                    position="top-right"
+                    autoClose={1000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
                 <div className="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
                     <div className="flex justify-center grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12">
                         <img
@@ -15,7 +74,7 @@ const Signup = () => {
                         />
                     </div>
                     <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 mt-6 md:mt-12">
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="flex flex-row items-center justify-center lg:justify-start">
                                 <p className="text-lg mb-0 mr-4">Sign up with</p>
                                 <button
@@ -68,40 +127,56 @@ const Signup = () => {
                             </div>
                             <div className="mb-6">
                                 <input
+                                    onChange={handleChange}
+                                    value={name}
+                                    name="name"
                                     type="text"
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-600 focus:outline-none"
-                                    id="exampleFormControlInput2"
+                                    id="name"
                                     placeholder="Your name"
+                                    required
                                 />
                             </div>
                             <div className="mb-6">
                                 <input
+                                    onChange={handleChange}
+                                    value={email}
+                                    name="email"
                                     type="email"
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-600 focus:outline-none"
-                                    id="exampleFormControlInput2"
+                                    id="email"
                                     placeholder="Email address"
+                                    required
                                 />
                             </div>
                             <div className="mb-6">
                                 <input
+                                    onChange={handleChange}
+                                    value={password}
+                                    name="password"
                                     type="password"
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-600 focus:outline-none"
-                                    id="exampleFormControlInput2"
+                                    id="password"
                                     placeholder="Password"
+                                    required
                                 />
                             </div>
                             <div className="mb-6">
                                 <input
+                                    onChange={handleChange}
+                                    value={rePassword}
+                                    name="rePassword"
                                     type="password"
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-600 focus:outline-none"
-                                    id="exampleFormControlInput2"
+                                    id="rePassword"
                                     placeholder="Re-enter Password"
+                                    required
                                 />
                             </div>
 
                             <div className="text-center lg:text-left">
                                 <button
-                                    type="button"
+                                    type="submit"
                                     className="inline-block px-7 py-3 bg-pink-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-pink-700 hover:shadow-lg focus:bg-pink-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-800 active:shadow-lg transition duration-150 ease-in-out"
                                 >
                                     Sign up

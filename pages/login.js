@@ -1,10 +1,77 @@
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/router';
+import React, { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
+
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleChange = (e) => {
+        if (e.target.name == "email") { setEmail(e.target.value) }
+        else if (e.target.name == "password") { setPassword(e.target.value) }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const data = { email, password }
+        let res = await fetch('http://localhost:3000/api/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        let response = await res.json();
+        setEmail('')
+        setPassword('')
+        if (response.success) {
+            localStorage.setItem('token', response.token)
+            toast.success('Successfully Logged in', {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            setTimeout(() => {
+                router.push('http://localhost:3000')
+            }, 1500);
+        } else {
+            toast.error(response.error, {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    }
+
     return (
         <section>
             <div className="px-6 h-full text-gray-800">
+                <ToastContainer
+                    position="top-right"
+                    autoClose={1000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
                 <div className="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
                     <div className="flex justify-center grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12">
                         <img
@@ -14,7 +81,7 @@ const Login = () => {
                         />
                     </div>
                     <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 mt-6 md:mt-12">
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="flex flex-row items-center justify-center lg:justify-start">
                                 <p className="text-lg mb-0 mr-4">Sign in with</p>
                                 <button
@@ -67,38 +134,44 @@ const Login = () => {
                             </div>
                             <div className="mb-6">
                                 <input
+                                    value={email}
+                                    onChange={handleChange}
+                                    name="email"
                                     type="text"
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-600 focus:outline-none"
-                                    id="exampleFormControlInput2"
+                                    id="email"
                                     placeholder="Email address"
+                                    required
                                 />
                             </div>
                             <div className="mb-6">
                                 <input
+                                    value={password}
+                                    onChange={handleChange}
+                                    name='password'
                                     type="password"
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-600 focus:outline-none"
-                                    id="exampleFormControlInput2"
+                                    id="password"
                                     placeholder="Password"
+                                    required
                                 />
                             </div>
 
-                            <div className="flex justify-between items-center mb-6">
-                                <div className="form-group form-check">
+                            <div className="flex flex-col justify-around items-center mb-4">
+                                <div className="form-group form-check mb-2">
                                     <input
                                         type="checkbox"
-                                        className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-pink-600 checked:border-pink-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                                        className="form-check-input  h-4 w-4 border border-pink-500 rounded-sm bg-white focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                                         id="exampleCheck2"
                                     />
-                                    <label className="form-check-label inline-block text-gray-800" for="exampleCheck2"
-                                    >Remember me</label
-                                    >
+                                    <label className="form-check-label inline-block text-gray-800" htmlFor="exampleCheck2">Remember me</label>
                                 </div>
-                                <Link legacyBehavior href={'/forgot'}><a href="#!" className="text-gray-800">Forgot password?</a></Link>
+                                <Link legacyBehavior href={'/forgot'}><a href="#!" className="text-pink-600">Forgot password?</a></Link>
                             </div>
 
                             <div className="text-center lg:text-left">
                                 <button
-                                    type="button"
+                                    type="submit"
                                     className="inline-block px-7 py-3 bg-pink-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-pink-700 hover:shadow-lg focus:bg-pink-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-800 active:shadow-lg transition duration-150 ease-in-out"
                                 >
                                     Login

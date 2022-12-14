@@ -14,6 +14,7 @@ const Slug = ({ product, variants }) => {
 
     const [pin, setPin] = useState();
     const [service, setService] = useState(null);
+    const [size, setSize] = useState(product.size);
 
     const checkServiceability = async () => {
         let pins = await fetch('http://localhost:3000/api/pincode');
@@ -50,8 +51,12 @@ const Slug = ({ product, variants }) => {
         setPin(e.target.value)
     }
 
-    const [color, setColor] = useState(product.color);
-    const [size, setSize] = useState(product.size);
+    const changeSize = (e) => {
+        setSize(e.target.value)
+        let url = `/product/${variants[e.target.value]['slug']}`
+        router.push(url);
+    }
+
 
     return (
         <section className="text-gray-600 body-font overflow-hidden">
@@ -67,12 +72,12 @@ const Slug = ({ product, variants }) => {
                 pauseOnHover
                 theme="light"
             />
-            <div className="container px-5 py-16 mx-auto">
+            <div className="container px-5 py-12 mx-auto">
                 <div className="lg:w-4/5 mx-auto flex flex-wrap">
-                    <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-auto h-64 object-contain rounded" src="https://m.media-amazon.com/images/I/71tJWaahoDL._UY741_.jpg" />
-                    <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+                    <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-96 h-64 m-auto object-contain rounded" src={product.img} />
+                    <div className="lg:w-1/2 w-full lg:pl-10 py-6 mt-6 lg:mt-0">
                         <h2 className="text-sm title-font text-gray-500 tracking-widest">SHOPNOW</h2>
-                        <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} ({product.size})</h1>
+                        <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} ({size})</h1>
                         <div className="flex mb-4">
                             {/* <span className="flex items-center">
                                 <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-pink-500" viewBox="0 0 24 24">
@@ -113,22 +118,18 @@ const Slug = ({ product, variants }) => {
                         <p className="leading-relaxed">{product.desc}</p>
                         <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                             <div className="flex">
-                                <span className="mr-3">Color:</span>
-                                {Object.keys(variants).includes("red") && Object.keys(variants['red']).includes(size) && <button className="border-2 bg-red-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                {Object.keys(variants).includes("green") && Object.keys(variants['green']).includes(size) && <button className="border-2 bg-green-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                {Object.keys(variants).includes("blue") && Object.keys(variants['blue']).includes(size) && <button className="border-2 bg-blue-500 rounded-full w-6 h-6 focus:outline-none"></button>}
-                                {Object.keys(variants).includes("black") && Object.keys(variants['black']).includes(size) && <button className="border-2 bg-black rounded-full w-6 h-6 focus:outline-none"></button>}
-                                {Object.keys(variants).includes("yellow") && Object.keys(variants['yellow']).includes(size) && <button className="border-2 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none"></button>}
+                                <span className="mr-2">Color:</span>
+                                <button className={`border-2 ${product.color === 'black' ? "bg-black" : `bg-${product.color}-500`} rounded-full w-6 h-6 focus:outline-none`}></button>
                             </div>
-                            <div className="flex items-center">
-                                <span className="mr-3">Size</span>
+                            <div className="flex items-center mx-3">
+                                <span className="mr-3">Size:</span>
                                 <div className="relative">
-                                    <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
-                                        <option>S</option>
-                                        <option>M</option>
-                                        <option>L</option>
-                                        <option>XL</option>
-                                        <option>XXL</option>
+                                    <select value={size} onChange={changeSize} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
+                                        {Object.keys(variants).includes("S") && <option>S</option>}
+                                        {Object.keys(variants).includes("M") && <option>M</option>}
+                                        {Object.keys(variants).includes("L") && <option>L</option>}
+                                        {Object.keys(variants).includes("XL") && <option>XL</option>}
+                                        {Object.keys(variants).includes("XXL") && <option>XXL</option>}
                                     </select>
                                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                                         <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4" viewBox="0 0 24 24">
@@ -164,7 +165,7 @@ const Slug = ({ product, variants }) => {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     )
 }
 
@@ -174,21 +175,21 @@ export async function getServerSideProps(context) {
     }
     let product = await Product.findOne({ slug: context.query.slug })
     let variants = await Product.find({ title: product.title, category: product.category })
-    let colorSizeSlug = {}
+    let sizeSlug = {}
     for (let item of variants) {
-        if (Object.keys(colorSizeSlug).includes(item.color)) {
-            colorSizeSlug[item.color][item.size] = { slug: item.slug };
+        if (Object.keys(sizeSlug).includes(item.size)) {
+            sizeSlug[item.size] = { slug: item.slug };
         }
         else {
-            colorSizeSlug[item.color] = {}
-            colorSizeSlug[item.color][item.size] = { slug: item.slug };
+            sizeSlug[item.size] = {}
+            sizeSlug[item.size] = { slug: item.slug };
         }
     }
 
     return {
         props: {
             product: JSON.parse(JSON.stringify(product)),
-            variants: JSON.parse(JSON.stringify(colorSizeSlug))
+            variants: JSON.parse(JSON.stringify(sizeSlug))
         }
     }
 }
