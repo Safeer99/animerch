@@ -1,12 +1,14 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import { AiFillCloseCircle, AiFillMinusCircle, AiFillPlusCircle, AiOutlineShoppingCart } from 'react-icons/ai'
 import { BsFillBagCheckFill } from 'react-icons/bs'
 import { MdAccountCircle } from 'react-icons/md'
+import { CartState } from '../context/CartContext'
 
-const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
+const Navbar = () => {
 
+    const { cart, addToCart, removeFromCart, clearCart, subTotal } = CartState();
     const ref = useRef();
 
     const toggleCart = () => {
@@ -20,13 +22,13 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
     }
 
     return (
-        <div className='flex sticky top-0 z-10 bg-white flex-col md:flex-row md:justify-start justify-center items-center py-2 shadow-md'>
+        <div className='flex sticky top-0 z-10 bg-white flex-col md:flex-row md:justify-start md:items-center justify-center items-start py-2 shadow-md'>
             <div className="logo mx-5">
                 <Link legacyBehavior href={'/'}>
                     <a><Image src="/logo.png" alt="" width={200} height={40} /></a>
                 </Link>
             </div>
-            <div className="nav">
+            <div className="nav mx-auto md:mx-0">
                 <ul className='flex space-x-6 mt-2 md:mt-0 font-bold md:text-md'>
                     <Link legacyBehavior href={'/tshirts'}><a><li className='hover:text-pink-700'>Tshirts</li></a></Link>
                     <Link legacyBehavior href={'/hoodies'}><a><li className='hover:text-pink-700'>Hoodies</li></a></Link>
@@ -34,11 +36,11 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
                     <Link legacyBehavior href={'/mugs'}><a><li className='hover:text-pink-700'>Mugs</li></a></Link>
                 </ul>
             </div>
-            <div className="flex cart cursor-pointer absolute right-0 top-2 mx-5">
+            <div className="flex cart cursor-pointer absolute right-0 top-3 mx-3">
                 <Link legacyBehavior href={'/login'}>
-                    <a><MdAccountCircle className='text-xl md:text-2xl mx-2' /></a>
+                    <a><MdAccountCircle className='text-2xl mx-1' /></a>
                 </Link>
-                <AiOutlineShoppingCart onClick={toggleCart} className=' text-xl md:text-2xl' />
+                <AiOutlineShoppingCart onClick={toggleCart} className=' text-2xl mx-1' />
             </div>
 
             <div ref={ref} className={`w-72 h-[100vh] overflow-y-scroll z-10 sideCart transform transition-transform ${Object.keys(cart).length !== 0 ? 'translate-x-0' : 'translate-x-full'} absolute top-2 right-0 bg-pink-100 px-8 py-10`}>

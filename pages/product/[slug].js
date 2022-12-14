@@ -4,9 +4,11 @@ import React, { useState } from 'react'
 import Product from '../../models/Product';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CartState } from '../../context/CartContext';
 
-const Slug = ({ buyNow, addToCart, product, variants }) => {
+const Slug = ({ product, variants }) => {
 
+    const { buyNow, addToCart } = CartState()
     const router = useRouter()
     const { slug } = router.query;
 

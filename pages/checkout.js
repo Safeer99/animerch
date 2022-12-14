@@ -2,8 +2,12 @@ import Link from 'next/link'
 import React from 'react'
 import { AiFillCloseCircle, AiFillMinusCircle, AiFillPlusCircle } from 'react-icons/ai'
 import { BsFillBagCheckFill } from 'react-icons/bs'
+import { CartState } from '../context/CartContext'
 
-const Checkout = ({ cart, removeFromCart, addToCart, subTotal }) => {
+const Checkout = () => {
+
+    const { cart, removeFromCart, addToCart, subTotal } = CartState()
+
     return (
         <div className='container mx-1 px-2 md:m-auto'>
             <h1 className="font-bold text-3xl my-8 text-center">Checkout</h1>
