@@ -17,7 +17,7 @@ const Slug = ({ product, variants }) => {
     const [size, setSize] = useState(product.size);
 
     const checkServiceability = async () => {
-        let pins = await fetch(`${process.env.HOST}/api/pincode`);
+        let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
         let pinJson = await pins.json();
         if (pinJson.includes(parseInt(pin))) {
             setService(true);

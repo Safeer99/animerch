@@ -22,7 +22,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = { email, password }
-        let res = await fetch(`${process.env.HOST}/api/login`, {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ const Login = () => {
                 theme: "light",
             });
             setTimeout(() => {
-                router.push(process.env.HOST)
+                router.push(process.env.NEXT_PUBLIC_HOST)
             }, 1500);
         } else {
             toast.error(response.error, {
