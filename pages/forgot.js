@@ -1,7 +1,15 @@
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect } from 'react'
 
 const Forgot = () => {
+
+    const router = useRouter();
+
+    useEffect(() => {
+        if (localStorage.getItem("token")) router.push('/')
+    }, [])
+
     return (
         <section>
             <div className="px-6 h-full text-gray-800">

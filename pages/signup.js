@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import Router, { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,6 +13,10 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
 
+    useEffect(() => {
+        if (localStorage.getItem("token")) router.push('/')
+    }, [])
+
     const handleChange = (e) => {
         if (e.target.name == "name") { setName(e.target.value) }
         else if (e.target.name == "email") { setEmail(e.target.value) }
@@ -23,7 +27,7 @@ const Signup = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = { name, email, password }
-        let res = await fetch('http://localhost:3000/api/signup', {
+        let res = await fetch(`${process.env.HOST}/api/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -75,7 +79,7 @@ const Signup = () => {
                     </div>
                     <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 mt-6 md:mt-12">
                         <form onSubmit={handleSubmit}>
-                            <div className="flex flex-row items-center justify-center lg:justify-start">
+                            <div className="flex flex-row items-center justify-center">
                                 <p className="text-lg mb-0 mr-4">Sign up with</p>
                                 <button
                                     type="button"
@@ -174,10 +178,10 @@ const Signup = () => {
                                 />
                             </div>
 
-                            <div className="text-center lg:text-left">
+                            <div className="text-center">
                                 <button
                                     type="submit"
-                                    className="inline-block px-7 py-3 bg-pink-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-pink-700 hover:shadow-lg focus:bg-pink-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-800 active:shadow-lg transition duration-150 ease-in-out"
+                                    className="inline-block md:w-1/2 px-7 py-3 bg-pink-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-pink-700 hover:shadow-lg focus:bg-pink-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-800 active:shadow-lg transition duration-150 ease-in-out"
                                 >
                                     Sign up
                                 </button>

@@ -39,15 +39,15 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="flex cart cursor-pointer absolute right-0 top-3 mx-3">
-                <a onMouseOver={() => { setDropDown(true) }} onMouseLeave={() => { setDropDown(false) }}>
+                <div onMouseOver={() => { setDropDown(true) }} onMouseLeave={() => { setDropDown(false) }}>
                     {user.value && <MdAccountCircle className='text-2xl mx-1' />}
                     {user.value && dropDown && <div onMouseOver={() => { setDropDown(true) }} onMouseLeave={() => { setDropDown(false) }} className="absolute right-6 w-36 py-2 bg-pink-100 rounded-md shadow-xl">
-                        <Link legacyBehavior href={'/myaccount'}><a className="block px-4 py-2 text-sm text-black hover:bg-pink-300 hover:text-white">My Account</a></Link>
-                        <Link legacyBehavior href={'/orders'}><a className="block px-4 py-2 text-sm text-black hover:bg-pink-300 hover:text-white">Orders</a></Link>
-                        <Link legacyBehavior href={'/wishlist'}><a className="block px-4 py-2 text-sm text-black hover:bg-pink-300 hover:text-white">Wishlist</a></Link>
-                        <a onClick={logout} className="block px-4 py-2 text-sm text-black hover:bg-pink-300 hover:text-white">Logout</a>
+                        <Link legacyBehavior href={'/myaccount'}><a className="block px-4 py-2 text-sm text-black font-bold hover:bg-pink-300 hover:text-white">My Account</a></Link>
+                        <Link legacyBehavior href={'/orders'}><a className="block px-4 py-2 text-sm text-black font-bold hover:bg-pink-300 hover:text-white">Orders</a></Link>
+                        <Link legacyBehavior href={'/wishlist'}><a className="block px-4 py-2 text-sm text-black font-bold hover:bg-pink-300 hover:text-white">Wishlist</a></Link>
+                        <a onClick={logout} className="block px-4 py-2 text-sm text-black font-bold hover:bg-pink-300 hover:text-white">Logout</a>
                     </div>}
-                </a>
+                </div>
                 {!user.value && <Link legacyBehavior href={'/login'}>
                     <a>
                         <button className='flex text-white border-0 mr-2 py-1 px-3 focus:outline-none rounded text-sm bg-pink-500 hover:bg-pink-600'>

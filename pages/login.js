@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,6 +10,10 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    useEffect(() => {
+        if (localStorage.getItem("token")) router.push('/')
+    }, [])
+
     const handleChange = (e) => {
         if (e.target.name == "email") { setEmail(e.target.value) }
         else if (e.target.name == "password") { setPassword(e.target.value) }
@@ -18,7 +22,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = { email, password }
-        let res = await fetch('http://localhost:3000/api/login', {
+        let res = await fetch(`${process.env.HOST}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,7 +45,7 @@ const Login = () => {
                 theme: "light",
             });
             setTimeout(() => {
-                router.push('http://localhost:3000')
+                router.push(process.env.HOST)
             }, 1500);
         } else {
             toast.error(response.error, {
@@ -82,7 +86,7 @@ const Login = () => {
                     </div>
                     <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 mt-6 md:mt-12">
                         <form onSubmit={handleSubmit}>
-                            <div className="flex flex-row items-center justify-center lg:justify-start">
+                            <div className="flex flex-row items-center justify-center">
                                 <p className="text-lg mb-0 mr-4">Sign in with</p>
                                 <button
                                     type="button"
@@ -157,22 +161,14 @@ const Login = () => {
                                 />
                             </div>
 
-                            <div className="flex flex-col justify-around items-center mb-4">
-                                <div className="form-group form-check mb-2">
-                                    <input
-                                        type="checkbox"
-                                        className="form-check-input  h-4 w-4 border border-pink-500 rounded-sm bg-white focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                        id="exampleCheck2"
-                                    />
-                                    <label className="form-check-label inline-block text-gray-800" htmlFor="exampleCheck2">Remember me</label>
-                                </div>
+                            <div className="flex flex-col md:flex-row justify-around md:justify-between items-center mb-4">
                                 <Link legacyBehavior href={'/forgot'}><a href="#!" className="text-pink-600">Forgot password?</a></Link>
                             </div>
 
-                            <div className="text-center lg:text-left">
+                            <div className="text-center">
                                 <button
                                     type="submit"
-                                    className="inline-block px-7 py-3 bg-pink-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-pink-700 hover:shadow-lg focus:bg-pink-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-800 active:shadow-lg transition duration-150 ease-in-out"
+                                    className="inline-block md:w-1/2 px-7 py-3 bg-pink-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-pink-700 hover:shadow-lg focus:bg-pink-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-800 active:shadow-lg transition duration-150 ease-in-out"
                                 >
                                     Login
                                 </button>

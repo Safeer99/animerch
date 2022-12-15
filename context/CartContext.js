@@ -26,6 +26,7 @@ const CartContext = ({ children }) => {
 
     const logout = () => {
         localStorage.removeItem('token');
+        router.push('/');
         setUser({ value: null });
     }
 
