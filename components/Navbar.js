@@ -79,7 +79,7 @@ const Navbar = () => {
                 <div className='font-bold my-2'>SubTotal: ₹{subTotal}</div>
                 <div className="flex justify-between">
                     <Link legacyBehavior href={'/checkout'}>
-                        <button className='flex mt-3 text-white border-0 py-2 px-4 focus:outline-none rounded text-sm bg-pink-500 hover:bg-pink-600'>
+                        <button onClick={toggleCart} className='flex mt-3 text-white border-0 py-2 px-4 focus:outline-none rounded text-sm bg-pink-500 hover:bg-pink-600'>
                             <BsFillBagCheckFill className='m-1' /> Checkout
                         </button>
                     </Link>
