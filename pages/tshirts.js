@@ -50,7 +50,7 @@ export async function getServerSideProps(context) {
             tshirts[item.title] = JSON.parse(JSON.stringify(item))
             if (item.availableQty > 0) {
                 tshirts[item.title].size = [item.size];
-            }
+            } else tshirts[item.title].size = [];
         }
     }
 

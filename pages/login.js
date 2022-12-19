@@ -34,6 +34,7 @@ const Login = () => {
         setPassword('')
         if (response.success) {
             localStorage.setItem('token', response.token)
+            localStorage.setItem('email', response.email)
             toast.success('Successfully Logged in', {
                 position: "top-right",
                 autoClose: 1000,

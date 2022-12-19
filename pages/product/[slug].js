@@ -19,9 +19,9 @@ const Slug = ({ product, variants }) => {
     const checkServiceability = async () => {
         let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
         let pinJson = await pins.json();
-        if (pinJson.includes(parseInt(pin))) {
+        if (Object.keys(pinJson).includes(pin)) {
             setService(true);
-            toast.success('Yay, we can deliver at this location', {
+            toast.success('Yayy, we can deliver at this location', {
                 position: "top-right",
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -159,7 +159,7 @@ const Slug = ({ product, variants }) => {
                             Sorry, we do not deliver to this pincode yet
                         </div>}
                         {service && service !== null && <div className="text-green-700 text-sm mt-3">
-                            Yay! This pincode is servicable
+                            Yayy! This pincode is servicable
                         </div>
                         }
                     </div>
