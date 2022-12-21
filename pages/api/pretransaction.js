@@ -15,16 +15,16 @@ const handler = async (req, res) => {
             sumTotal += cart[item].price * cart[item].qty;
             product = await Product.findOne({ slug: item })
             if (product.availableQty < cart[item].qty) {
-                res.status(200).json({ success: false, error: "Some items in your cart went out of stocks please try again!" })
+                res.status(200).json({ success: false, error: "Some items in your cart went out of stocks please try again!", cartClear: false })
                 return;
             }
             if (product.price !== cart[item].price) {
-                res.status(200).json({ success: false, error: "The prices of some products has been changed please try again." })
+                res.status(200).json({ success: false, error: "The prices of some products has been changed please try again.", cartClear: true })
                 return;
             }
         }
         if (sumTotal !== req.body.subTotal) {
-            res.status(200).json({ success: false, error: "The prices of some products has been changed please try again." })
+            res.status(200).json({ success: false, error: "The prices of some products has been changed please try again.", cartClear: true })
             return;
         }
 
@@ -105,7 +105,7 @@ const handler = async (req, res) => {
         // }
 
         // let myr = await requestAsync()
-        res.status(200).json({ success: true, message: "Your order has been successfully placed", txnToken: "3453redfs" })
+        res.status(200).json({ success: true, message: "Your order has been successfully placed", txnToken: "3453redfs", cartClear: false })
     }
 }
 

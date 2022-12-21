@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // import Head from 'next/head'
 // import Script from 'next/script'
 import { useRouter } from 'next/router'
+import pincodes from '../pincodes.json'
 
 const Checkout = () => {
     const { cart, clearCart, removeFromCart, addToCart, subTotal } = CartState()
@@ -26,6 +27,7 @@ const Checkout = () => {
     const handleChange = async (e) => {
 
         if (e.target.name === 'name') setName(e.target.value);
+        else if (e.target.name === 'email') setEmail(e.target.value);
         else if (e.target.name === 'phone') setPhone(e.target.value);
         else if (e.target.name === 'address') setAddress(e.target.value);
         else if (e.target.name === 'pincode') {
@@ -56,6 +58,20 @@ const Checkout = () => {
 
 
     const initiatePayment = async () => {
+        if (!Object.keys(pincodes).includes(pinCode)) {
+            toast.error("Sorry, this location is not serviceable", {
+                position: "top-right",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
+        console.log("service");
         let orderId = Math.floor(Math.random() * Date.now());
 
         const data = { cart, subTotal, orderId, email, name, address, pinCode, phone };
@@ -102,7 +118,7 @@ const Checkout = () => {
             //     console.log("error => ", error);
             // });
         } else {
-            clearCart();
+            if (response.cartClear) clearCart();
             toast.error(response.error, {
                 position: "top-right",
                 autoClose: 1500,
@@ -127,19 +143,19 @@ const Checkout = () => {
                 <div className="px-2 w-1/2">
                     <div className="mb-2">
                         <label htmlFor="name" className='leading-7 text-sm text-gray-600'>Name</label>
-                        <input onChange={handleChange} value={name} type="text" name='name' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
+                        <input onChange={handleChange} value={name} placeholder="Enter your name" type="text" name='name' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
                     </div>
                 </div>
                 <div className="px-2 w-1/2">
                     <div className="mb-2">
                         <label htmlFor="email" className='leading-7 text-sm text-gray-600'>Email</label>
-                        <input readOnly={true} value={email} type="email" name='email' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
+                        <input onChange={handleChange} value={email} placeholder="Enter your email" type="email" name='email' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
                     </div>
                 </div>
                 <div className="px-2 w-[100%]">
                     <div className="mb-2">
                         <label htmlFor="address" className='leading-7 text-sm text-gray-600'>Address</label>
-                        <textarea onChange={handleChange} value={address} name="address" id="address" cols="30" rows="5" className='w-full h-20 bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' ></textarea>
+                        <textarea onChange={handleChange} value={address} placeholder="Enter address" name="address" id="address" cols="30" rows="5" className='w-full h-20 bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' ></textarea>
                     </div>
                 </div>
                 <div className="px-2 w-1/2">
@@ -152,19 +168,19 @@ const Checkout = () => {
                 <div className="px-2 w-1/2">
                     <div className="mb-2">
                         <label htmlFor="pincode" className='leading-7 text-sm text-gray-600'>PinCode</label>
-                        <input onChange={handleChange} value={pinCode} type="pincode" name='pincode' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
+                        <input onChange={handleChange} value={pinCode} placeholder="Enter pincode" type="pincode" name='pincode' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
                     </div>
                 </div>
                 <div className="px-2 w-1/2">
                     <div className="mb-2">
                         <label htmlFor="city" className='leading-7 text-sm text-gray-600'>City</label>
-                        <input onChange={handleChange} value={city} type="text" name='city' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
+                        <input onChange={handleChange} value={city} placeholder="Enter city" type="text" name='city' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
                     </div>
                 </div>
                 <div className="px-2 w-1/2">
                     <div className="mb-2">
                         <label htmlFor="state" className='leading-7 text-sm text-gray-600'>State</label>
-                        <input onChange={handleChange} value={state} type="text" name='state' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
+                        <input onChange={handleChange} value={state} placeholder="Enter state" type="text" name='state' className='w-full bg-white rounded border border-gray-300 focus:border-pink-500 focus:ring-2 focus:ring-pink-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out' />
                     </div>
                 </div>
             </div>
