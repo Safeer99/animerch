@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }) {
     })
   })
 
-  return (<>
+  return (
     <CartContext>
       <LoadingBar
         color='#ff2d55'
@@ -32,7 +32,6 @@ function MyApp({ Component, pageProps }) {
       <Component {...pageProps} />
       <Footer />
     </CartContext>
-  </>
   )
 }
 

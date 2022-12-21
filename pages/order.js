@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CartState } from '../context/CartContext';
 import Order from '../models/Order'
 
@@ -8,8 +8,11 @@ const MyOrder = ({ order }) => {
     const products = order.products;
     const router = useRouter()
     const { clearCart } = CartState()
+    const [date, setDate] = useState()
     useEffect(() => {
         if (router.query.clearcart == 1) clearCart()
+        const d = new Date(order.createdAt);
+        setDate(d);
     }, [])
 
     return (
@@ -20,6 +23,7 @@ const MyOrder = ({ order }) => {
                         <h2 className="text-sm title-font text-gray-500 tracking-widest">SHOPNOW.COM</h2>
                         <h1 className="text-gray-900 text-2xl title-font font-medium mb-4">Order id: {order.orderId}</h1>
                         <p className="leading-relaxed mb-1">Your order has been successfully placed.</p>
+                        <p className="leading-relaxed mb-1">Order placed on:  {date?.toLocaleDateString("en-IN", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.</p>
                         <p className="leading-relaxed mb-4">Your payment status is <span className='font-semibold text-slate-700'>{order.status}</span>.</p>
                         <div className="flex mb-4">
                             <span className="flex-grow border-gray-300 py-2 text-lg px-1">Item description</span>
