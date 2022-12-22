@@ -26,6 +26,19 @@ const Signup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (password !== rePassword) {
+            toast.error("Password didn't match", {
+                position: "top-right",
+                autoClose: 1000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
         const data = { name, email, password }
         let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
             method: 'POST',

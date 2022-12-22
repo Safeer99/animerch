@@ -6,6 +6,7 @@ const Cart = createContext();
 const CartContext = ({ children }) => {
     const [cart, setCart] = useState({});
     const [subTotal, setSubTotal] = useState(0);
+    const [key, setKey] = useState(false);
     const [user, setUser] = useState({ value: null });
     const router = useRouter()
 
@@ -41,6 +42,7 @@ const CartContext = ({ children }) => {
     }
 
     const addToCart = (itemCode, qty, price, name, size, variant) => {
+        setKey(true);
         let newCart = cart;
         if (itemCode in cart) {
             newCart[itemCode].qty = cart[itemCode].qty + qty;
@@ -57,6 +59,7 @@ const CartContext = ({ children }) => {
             newCart[itemCode].qty = cart[itemCode].qty - qty;
         }
         if (newCart[itemCode].qty <= 0) {
+            setKey(false);
             delete newCart[itemCode]
         }
         setCart(newCart);
@@ -72,12 +75,13 @@ const CartContext = ({ children }) => {
     }
 
     const clearCart = () => {
+        setKey(false);
         setCart({});
         saveCart({});
     }
 
     return (
-        <Cart.Provider value={{ logout, user, addToCart, removeFromCart, buyNow, clearCart, subTotal, cart }}>
+        <Cart.Provider value={{ key, logout, user, addToCart, removeFromCart, buyNow, clearCart, subTotal, cart }}>
             {children}
         </Cart.Provider>
     )
