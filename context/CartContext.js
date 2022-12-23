@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import { UserContext } from './UserContext';
 
 const Cart = createContext();
 
@@ -9,6 +10,8 @@ const CartContext = ({ children }) => {
     const [key, setKey] = useState(false);
     const [user, setUser] = useState({ value: null });
     const router = useRouter()
+
+    const { dispatch } = useContext(UserContext);
 
     useEffect(() => {
         try {
@@ -29,6 +32,7 @@ const CartContext = ({ children }) => {
         localStorage.removeItem('token');
         router.push('/');
         setUser({ value: null });
+        dispatch({ type: "LOG_OUT" })
     }
 
     const saveCart = (myCart) => {

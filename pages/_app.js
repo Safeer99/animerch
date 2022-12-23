@@ -5,6 +5,7 @@ import CartContext from '../context/CartContext';
 import LoadingBar from 'react-top-loading-bar'
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { UserContextProvider } from '../context/UserContext';
 
 function MyApp({ Component, pageProps }) {
 
@@ -21,17 +22,19 @@ function MyApp({ Component, pageProps }) {
   })
 
   return (
-    <CartContext>
-      <LoadingBar
-        color='#ff2d55'
-        progress={progress}
-        waitingTime={500}
-        onLoaderFinished={() => setProgress(0)}
-      />
-      <Navbar />
-      <Component {...pageProps} />
-      <Footer />
-    </CartContext>
+    <UserContextProvider>
+      <CartContext>
+        <LoadingBar
+          color='#ff2d55'
+          progress={progress}
+          waitingTime={500}
+          onLoaderFinished={() => setProgress(0)}
+        />
+        <Navbar />
+        <Component {...pageProps} />
+        <Footer />
+      </CartContext>
+    </UserContextProvider>
   )
 }
 

@@ -74,7 +74,7 @@ const Checkout = () => {
         console.log("service");
         let orderId = Math.floor(Math.random() * Date.now());
 
-        const data = { cart, subTotal, orderId, email, name, address, pinCode, phone };
+        const data = { cart, subTotal, orderId, email, name, address, pinCode, state, city, phone };
         let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
             method: 'POST',
             headers: {
