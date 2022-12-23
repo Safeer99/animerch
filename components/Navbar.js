@@ -9,7 +9,7 @@ import { CartState } from '../context/CartContext'
 
 const Navbar = () => {
 
-    const { key, logout, user, cart, addToCart, removeFromCart, clearCart, subTotal } = CartState();
+    const { key, logout, token, cart, addToCart, removeFromCart, clearCart, subTotal } = CartState();
     const [dropDown, setDropDown] = useState(false);
     const [sideBar, setSideBar] = useState(false);
 
@@ -44,15 +44,15 @@ const Navbar = () => {
             {/* dropdown menu and login button */}
             <div className="z-30 cursor-pointer fixed right-9 top-3 mx-3 text-black">
                 <div onMouseOver={() => { setDropDown(true) }} onMouseLeave={() => { setDropDown(false) }}>
-                    {user.value && <MdAccountCircle className='text-2xl' />}
-                    {user.value && dropDown && <div className="absolute right-0 w-36 py-2 bg-pink-100 rounded-md shadow-xl">
+                    {token.value && <MdAccountCircle className='text-2xl' />}
+                    {token.value && dropDown && <div className="absolute right-0 w-36 py-2 bg-pink-100 rounded-md shadow-xl">
                         <Link legacyBehavior href={'/myaccount'}><a className="block px-4 py-2 text-sm text-black font-bold hover:bg-pink-300 hover:text-white">My Account</a></Link>
                         <Link legacyBehavior href={'/orders'}><a className="block px-4 py-2 text-sm text-black font-bold hover:bg-pink-300 hover:text-white">Orders</a></Link>
                         <Link legacyBehavior href={'/wishlist'}><a className="block px-4 py-2 text-sm text-black font-bold hover:bg-pink-300 hover:text-white">Wishlist</a></Link>
                         <a onClick={logout} className="block px-4 py-2 text-sm text-black font-bold hover:bg-pink-300 hover:text-white">Logout</a>
                     </div>}
                 </div>
-                {!user.value && <Link legacyBehavior href={'/login'}>
+                {!token.value && <Link legacyBehavior href={'/login'}>
                     <a>
                         <button className='flex text-white border-0 mr-2 py-1 px-3 focus:outline-none rounded text-sm bg-pink-500 hover:bg-pink-600'>
                             Log In

@@ -1,18 +1,18 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsPencilFill } from 'react-icons/bs'
 import { AiFillCloseCircle } from 'react-icons/ai'
-import { UserContext } from '../context/UserContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CartState } from '../context/CartContext';
 
 const MyAccount = () => {
 
     const router = useRouter();
 
-    const { userState, token, dispatch } = useContext(UserContext);
+    const { userState, token } = CartState();
 
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState(userState)
     const [selectedField, setSelectedField] = useState("")
     const [currentPassword, setCurrentPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
@@ -27,7 +27,7 @@ const MyAccount = () => {
     }
 
     const handleUserSubmit = async () => {
-        let data = { token: token, name: user.name, phone: user.phone, address: user.address, pincode: user.pincode }
+        let data = { token: token.value, name: user.name, phone: user.phone, address: user.address, pincode: user.pincode }
         let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updateuser`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -45,7 +45,7 @@ const MyAccount = () => {
                 progress: undefined,
                 theme: "light",
             });
-            dispatch({ type: "UPDATE_DATA", payload: updatedData.data })
+            setUser(updatedData.data);
         } else {
             toast.error('Please retry again', {
                 position: "top-right",
@@ -59,13 +59,10 @@ const MyAccount = () => {
             });
         }
         setSelectedField("");
-        // setTimeout(() => {
-        //     router.reload(window.location.pathname);
-        // }, 5000);
     }
 
     const handleChangePass = async () => {
-        let data = { token: token, currentPassword, newPassword }
+        let data = { token: token.value, currentPassword, newPassword }
         let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updatepassword`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -101,9 +98,8 @@ const MyAccount = () => {
     }
 
     useEffect(() => {
-        if (!localStorage.getItem("token")) router.push('/');
+        if (token.value === null) router.push('/');
         setSelectedField("");
-        setUser(userState);
     }, [])
 
     return (
@@ -113,18 +109,18 @@ const MyAccount = () => {
                 <div className='max-w-3xl mx-auto'>
                     <h2 className='my-4 text-2xl font-bold'>Manage Your Profile</h2>
                     <div className='w-full h-[100px] rounded relative text-xl font-semibold p-4 bg-gray-100 shadow-lg '>
-                        {userState?.name}<BsPencilFill onClick={() => setSelectedField("name")} className='absolute text-base cursor-pointer top-6 right-5' />
+                        {user?.name}<BsPencilFill onClick={() => setSelectedField("name")} className='absolute text-base cursor-pointer top-6 right-5' />
                         <p className='text-sm mt-2' >Account Owner</p>
                     </div>
                     <div className='w-full relative p-4 rounded border-2 mt-5'>
                         <h3 className='text-xl mb-2 font-semibold'>Contact Details</h3>
-                        <p className='my-2 font-semibold'>Email: <span className='font-normal mr-2'>{userState?.email}</span> <span className='font-light'>( Not editable )</span></p>
-                        <p className='font-semibold'>Phone: <span className='font-normal mr-2'>{userState?.phone ? userState?.phone : "Not set"}</span> <BsPencilFill onClick={() => setSelectedField("phone")} className='absolute text-base cursor-pointer bottom-4 right-5' /></p>
+                        <p className='my-2 font-semibold'>Email: <span className='font-normal mr-2'>{user?.email}</span> <span className='font-light'>( Not editable )</span></p>
+                        <p className='font-semibold'>Phone: <span className='font-normal mr-2'>{user?.phone ? user?.phone : "Not set"}</span> <BsPencilFill onClick={() => setSelectedField("phone")} className='absolute text-base cursor-pointer bottom-4 right-5' /></p>
                     </div>
                     <div className='w-full relative p-4 rounded border-2 mt-5'>
                         <h3 className='text-xl mb-2 font-semibold'>Address</h3>
-                        <p className='font-normal my-2 mr-2'>{userState?.address ? userState?.address : "Not set"}</p>
-                        <p className='font-semibold'>Pin-code: <span className='font-normal'>{userState?.pincode ? userState?.pincode : "Not set"}</span> <BsPencilFill onClick={() => setSelectedField("address")} className='absolute text-base cursor-pointer bottom-4 right-5' /></p>
+                        <p className='font-normal my-2 mr-2'>{user?.address ? user?.address : "Not set"}</p>
+                        <p className='font-semibold'>Pin-code: <span className='font-normal'>{user?.pincode ? user?.pincode : "Not set"}</span> <BsPencilFill onClick={() => setSelectedField("address")} className='absolute text-base cursor-pointer bottom-4 right-5' /></p>
                     </div>
                     <div className='w-full relative p-4 rounded border-2 mt-5'>
                         <h3 className='text-xl mb-2 font-semibold'>Change Password</h3>

@@ -11,14 +11,15 @@ import { useRouter } from 'next/router'
 import pincodes from '../pincodes.json'
 
 const Checkout = () => {
-    const { cart, clearCart, removeFromCart, addToCart, subTotal } = CartState()
+
+    const { token, userState, cart, clearCart, removeFromCart, addToCart, subTotal } = CartState()
     const router = useRouter();
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
-    const [pinCode, setPinCode] = useState('');
+    const [name, setName] = useState(userState.name);
+    const [email, setEmail] = useState(userState.email);
+    const [phone, setPhone] = useState(userState.phone);
+    const [address, setAddress] = useState(userState.address);
+    const [pinCode, setPinCode] = useState(userState.pincode);
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
 
@@ -52,8 +53,7 @@ const Checkout = () => {
     }
 
     useEffect(() => {
-        if (!localStorage.getItem("token")) router.push('/login')
-        if (localStorage.getItem("email")) setEmail(localStorage.getItem("email"))
+        if (token.value === null) router.push('/login');
     }, [])
 
 

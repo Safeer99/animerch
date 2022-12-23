@@ -1,17 +1,25 @@
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { UserContext } from './UserContext';
 
 const Cart = createContext();
 
 const CartContext = ({ children }) => {
     const [cart, setCart] = useState({});
+    const [userState, setUserState] = useState({});
     const [subTotal, setSubTotal] = useState(0);
     const [key, setKey] = useState(false);
-    const [user, setUser] = useState({ value: null });
+    const [token, setToken] = useState({ value: null });
     const router = useRouter()
 
-    const { dispatch } = useContext(UserContext);
+    const fetchUserData = async () => {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: token.value }),
+        })
+        let userData = await res.json()
+        setUserState(userData);
+    }
 
     useEffect(() => {
         try {
@@ -22,17 +30,18 @@ const CartContext = ({ children }) => {
         } catch (err) {
             localStorage.clear()
         }
-        const token = localStorage.getItem("token");
-        if (token) {
-            setUser({ value: token })
+        const t = localStorage.getItem("token");
+        if (t) {
+            setToken({ value: t })
+            fetchUserData()
         }
     }, [router.query])
 
     const logout = () => {
         localStorage.removeItem('token');
         router.push('/');
-        setUser({ value: null });
-        dispatch({ type: "LOG_OUT" })
+        setToken({ value: null });
+        setUserState({});
     }
 
     const saveCart = (myCart) => {
@@ -85,7 +94,7 @@ const CartContext = ({ children }) => {
     }
 
     return (
-        <Cart.Provider value={{ key, logout, user, addToCart, removeFromCart, buyNow, clearCart, subTotal, cart }}>
+        <Cart.Provider value={{ key, logout, token, userState, addToCart, removeFromCart, buyNow, clearCart, subTotal, cart }}>
             {children}
         </Cart.Provider>
     )
