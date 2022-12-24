@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import { CartState } from '../context/CartContext'
+import { useRouter } from 'next/router'
 
 const Wishlist = () => {
 
+    const router = useRouter();
     const { fetchUserData } = CartState();
 
     const [products, setProducts] = useState({});
@@ -20,15 +22,16 @@ const Wishlist = () => {
     }
 
     useEffect(() => {
+        if (!localStorage.getItem("token")) router.push('/');
         fetchItems();
     }, [])
 
     return (
-        <section className="text-gray-600 body-font">
+        <section className="text-gray-600 body-font min-h-[100vh]">
             <div className="container px-5 py-5 mx-auto">
                 <h2 className='m-3 font-bold text-2xl text-black'>Your Wishlist</h2>
                 <div className="flex justify-around flex-wrap -m-4">
-                    {Object.keys(products).length === 0 && <p>Sorry all the tshirts are currently out of stock. New stock coming soon. Stay Tuned!</p>}
+                    {Object.keys(products).length === 0 && <p>Your wishlist is empty start adding items now.</p>}
                     {Object.keys(products).map((item) => {
                         return <Link key={products[item]._id} legacyBehavior href={`/product/${products[item].slug}`} >
                             <div className="lg:w-1/5 w-1/2 p-4 cursor-pointer shadow-xl m-5">

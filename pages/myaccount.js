@@ -10,9 +10,9 @@ const MyAccount = () => {
 
     const router = useRouter();
 
-    const { userState, token } = CartState();
+    const { fetchUserData, token } = CartState();
 
-    const [user, setUser] = useState(userState)
+    const [user, setUser] = useState({})
     const [selectedField, setSelectedField] = useState("")
     const [currentPassword, setCurrentPassword] = useState("")
     const [newPassword, setNewPassword] = useState("")
@@ -45,7 +45,6 @@ const MyAccount = () => {
                 progress: undefined,
                 theme: "light",
             });
-            setUser(updatedData.data);
         } else {
             toast.error('Please retry again', {
                 position: "top-right",
@@ -97,9 +96,15 @@ const MyAccount = () => {
         setNewPassword("");
     }
 
+    const fetchData = async () => {
+        let data = await fetchUserData();
+        setUser(data);
+    }
+
     useEffect(() => {
         if (token.value === null) router.push('/');
         setSelectedField("");
+        fetchData();
     }, [])
 
     return (
@@ -130,7 +135,7 @@ const MyAccount = () => {
             </div>
             <div className={` ${selectedField ? 'block' : 'hidden'} w-[100%] h-[100vh] fixed top-0 bg-black opacity-70 left-0`}></div>
             <div className={` ${selectedField ? 'block' : 'hidden'} w-[100%] h-[100vh] p-4 fixed top-0 left-0`}>
-                <div className="max-w-sm rounded mx-auto my-48 p-5 bg-white">
+                <div className="w-[90%] md:w-2/3 lg:w-1/2 rounded absolute top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4 p-5 bg-white">
                     <h3 className='text-xl mb-4 font-semibold relative'>Update {selectedField} <span className='absolute right-0 top-1 text-pink-500 cursor-pointer'><AiFillCloseCircle onClick={() => setSelectedField("")} /> </span></h3>
                     {
                         selectedField === "password" && <>

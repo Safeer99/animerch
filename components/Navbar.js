@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { AiFillCloseCircle, AiFillMinusCircle, AiFillPlusCircle, AiOutlineShoppingCart } from 'react-icons/ai'
 import { BsFillBagCheckFill } from 'react-icons/bs'
@@ -13,7 +12,7 @@ const Navbar = () => {
     const [dropDown, setDropDown] = useState(false);
     const [sideBar, setSideBar] = useState(false);
 
-    const toggleCart = () => {
+    const toggleCart = async () => {
         setSideBar(!sideBar);
     }
 
@@ -65,6 +64,7 @@ const Navbar = () => {
             <div onClick={() => setSideBar(false)} className={`fixed left-0 top-0 z-30 w-full h-full ${sideBar ? 'block' : 'hidden'} bg-black opacity-80`}></div>
             <div className='top-3 right-3 z-30 fixed text-black'>
                 <AiOutlineShoppingCart onClick={toggleCart} className='z-30 text-2xl mx-1 cursor-pointer' />
+                {Object.keys(cart).length !== 0 && <div className='bg-pink-300 w-[18px] h-[18px] pointer-events-none leading-5 pb-2 text-center font-semibold top-1 fixed right-2 rounded-full text-sm'>{Object.keys(cart).length}</div>}
                 <div className={`w-72 h-[100vh] absolute -top-2 ${sideBar ? "-translate-x-60" : "translate-x-12"} transition-transform overflow-y-scroll  z-40  bg-pink-100 px-8 py-10`}>
                     <h2 className='font-bold text-center text-xl'>Shopping Cart</h2>
                     <span onClick={toggleCart} className="absolute top-2 right-2 cursor-pointer text-pink-500 text-2xl"><AiFillCloseCircle /></span>

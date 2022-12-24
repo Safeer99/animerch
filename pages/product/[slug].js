@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Product from '../../models/Product';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,13 +9,19 @@ import Error from 'next/error';
 
 const Slug = ({ error, product, variants }) => {
 
-    const { buyNow, addToCart } = CartState()
+    const { fetchUserData, token, buyNow, addToCart } = CartState()
     const router = useRouter()
     const { slug } = router.query;
 
     const [pin, setPin] = useState();
     const [service, setService] = useState(null);
     const [size, setSize] = useState(product?.size);
+    const [inWishlist, setInWishlist] = useState(false);
+
+    const fetchData = async () => {
+        let data = await fetchUserData();
+        if (data.wishlist.includes(product.title)) setInWishlist(true);
+    }
 
     const checkServiceability = async () => {
         let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`);
@@ -24,7 +30,7 @@ const Slug = ({ error, product, variants }) => {
             setService(true);
             toast.success('Yayy, we can deliver at this location', {
                 position: "top-right",
-                autoClose: 2000,
+                autoClose: 1500,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -53,10 +59,45 @@ const Slug = ({ error, product, variants }) => {
     }
 
     const changeSize = (e) => {
-        setSize(e.target.value)
+        setSize(e.target.value);
         let url = `/product/${variants[e.target.value]['slug']}`
         router.push(url);
     }
+
+    const handleWishList = async () => {
+        let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updatewishlist`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: token.value, title: product.title })
+        })
+        let response = await res.json();
+        if (response.success) {
+            response.added ? setInWishlist(true) : setInWishlist(false);
+            response.added ? toast.success('Product added to wishlist', {
+                position: "top-right",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            }) : toast.success('Product removed from wishlist', {
+                position: "top-right",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     if (error === 404) {
         return <Error statusCode={404} />
@@ -145,8 +186,8 @@ const Slug = ({ error, product, variants }) => {
                         <div className="flex justify-between">
                             {product.availableQty > 0 && <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>}
                             {product.availableQty <= 0 && <span className="title-font font-medium text-2xl text-gray-900">Currently Unavailable!!</span>}
-                            <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                                <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
+                            <button onClick={handleWishList} className={`rounded-full w-10 h-10 p-0 border-0 inline-flex items-center justify-center ${inWishlist ? "bg-pink-300" : "bg-gray-200"} ml-4`}>
+                                <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className={`w-5 h-5 ${inWishlist ? "text-pink-600" : "text-gray-600"} `} viewBox="0 0 24 24">
                                     <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
                                 </svg>
                             </button>

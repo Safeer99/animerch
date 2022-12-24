@@ -5,20 +5,20 @@ const Cart = createContext();
 
 const CartContext = ({ children }) => {
     const [cart, setCart] = useState({});
-    const [userState, setUserState] = useState({});
     const [subTotal, setSubTotal] = useState(0);
     const [key, setKey] = useState(false);
     const [token, setToken] = useState({ value: null });
     const router = useRouter()
 
     const fetchUserData = async () => {
+        let token = localStorage.getItem("token");
         let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: token.value }),
+            body: JSON.stringify({ token: token }),
         })
         let userData = await res.json()
-        setUserState(userData);
+        if (userData.success) return userData.data;
     }
 
     useEffect(() => {
@@ -31,9 +31,8 @@ const CartContext = ({ children }) => {
             localStorage.clear()
         }
         const t = localStorage.getItem("token");
-        if (t) {
+        if (t !== null) {
             setToken({ value: t })
-            fetchUserData()
         }
     }, [router.query])
 
@@ -41,7 +40,6 @@ const CartContext = ({ children }) => {
         localStorage.removeItem('token');
         router.push('/');
         setToken({ value: null });
-        setUserState({});
     }
 
     const saveCart = (myCart) => {
@@ -94,7 +92,7 @@ const CartContext = ({ children }) => {
     }
 
     return (
-        <Cart.Provider value={{ key, logout, token, userState, addToCart, removeFromCart, buyNow, clearCart, subTotal, cart }}>
+        <Cart.Provider value={{ fetchUserData, key, logout, token, addToCart, removeFromCart, buyNow, clearCart, subTotal, cart }}>
             {children}
         </Cart.Provider>
     )
