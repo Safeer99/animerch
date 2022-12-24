@@ -160,7 +160,7 @@ const Slug = ({ error, product, variants }) => {
                             </span> */}
                         </div>
                         <p className="leading-relaxed">{product.desc}</p>
-                        <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
+                        {(product.category === 'tshirt' || product.category === 'hoodie') && <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                             <div className="flex">
                                 <span className="mr-2">Color:</span>
                                 <button className={`border-2 ${product.color === 'black' ? "bg-black" : `bg-${product.color}-500`} rounded-full w-6 h-6 focus:outline-none`}></button>
@@ -182,7 +182,7 @@ const Slug = ({ error, product, variants }) => {
                                     </span>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         <div className="flex justify-between">
                             {product.availableQty > 0 && <span className="title-font font-medium text-2xl text-gray-900">₹{product.price}</span>}
                             {product.availableQty <= 0 && <span className="title-font font-medium text-2xl text-gray-900">Currently Unavailable!!</span>}

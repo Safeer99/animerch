@@ -3,12 +3,12 @@ import React from 'react'
 import Product from "../models/Product";
 import mongoose from "mongoose";
 
-const Mugs = ({ products }) => {
+const Cases = ({ products }) => {
     return (
         <section className="text-gray-600 body-font">
             <div className="container px-5 py-24 mx-auto">
                 <div className="flex justify-around flex-wrap -m-4">
-                    {Object.keys(products).length === 0 && <p>Sorry all the mugs are currently out of stock. New stock coming soon. Stay Tuned!</p>}
+                    {Object.keys(products).length === 0 && <p>Sorry all the cases are currently out of stock. New stock coming soon. Stay Tuned!</p>}
                     {Object.keys(products).map((item) => {
                         return <Link key={products[item]._id} legacyBehavior href={`/product/${products[item].slug}`} >
                             <div className="lg:w-1/5 w-1/2 p-4 cursor-pointer shadow-xl m-5">
@@ -19,13 +19,13 @@ const Mugs = ({ products }) => {
                                     <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">T-Shirts</h3>
                                     <h2 className="text-gray-900 title-font text-lg font-medium">{products[item].title}</h2>
                                     <p className="mt-1">₹{products[item].price}</p>
-                                    <div className="mt-1">
+                                    {/* <div className="mt-1">
                                         {products[item].size.includes('S') && <span className='border border-gray-300 px-1 mx-1'>S</span>}
                                         {products[item].size.includes('M') && <span className='border border-gray-300 px-1 mx-1' >M</span>}
                                         {products[item].size.includes('L') && <span className='border border-gray-300 px-1 mx-1' >L</span>}
                                         {products[item].size.includes('XL') && <span className='border border-gray-300 px-1 mx-1' >XL</span>}
                                         {products[item].size.includes('XXL') && <span className='border border-gray-300 px-1 mx-1' >XXL</span>}
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </Link>
@@ -40,24 +40,24 @@ export async function getServerSideProps(context) {
     if (!mongoose.connections[0].readyState) {
         await mongoose.connect(process.env.MONGO_URI);
     }
-    let products = await Product.find({ category: 'mug' })
-    let mugs = {}
+    let products = await Product.find({ category: 'case' })
+    let cases = {}
     for (let item of products) {
-        if (item.title in mugs) {
-            if (!mugs[item.title].size.includes(item.size) && item.availableQty > 0) {
-                mugs[item.title].size.push(item.size);
+        if (item.title in cases) {
+            if (!cases[item.title].size.includes(item.size) && item.availableQty > 0) {
+                cases[item.title].size.push(item.size);
             }
         } else {
-            mugs[item.title] = JSON.parse(JSON.stringify(item))
+            cases[item.title] = JSON.parse(JSON.stringify(item))
             if (item.availableQty > 0) {
-                mugs[item.title].size = [item.size];
-            } else mugs[item.title].size = [];
+                cases[item.title].size = [item.size];
+            } else cases[item.title].size = [];
         }
     }
 
     return {
-        props: { products: JSON.parse(JSON.stringify(mugs)) }
+        props: { products: JSON.parse(JSON.stringify(cases)) }
     }
 }
 
-export default Mugs
+export default Cases

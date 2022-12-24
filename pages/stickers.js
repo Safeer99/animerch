@@ -19,13 +19,13 @@ const Stickers = ({ products }) => {
                                     <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">T-Shirts</h3>
                                     <h2 className="text-gray-900 title-font text-lg font-medium">{products[item].title}</h2>
                                     <p className="mt-1">₹{products[item].price}</p>
-                                    <div className="mt-1">
+                                    {/* <div className="mt-1">
                                         {products[item].size.includes('S') && <span className='border border-gray-300 px-1 mx-1'>S</span>}
                                         {products[item].size.includes('M') && <span className='border border-gray-300 px-1 mx-1' >M</span>}
                                         {products[item].size.includes('L') && <span className='border border-gray-300 px-1 mx-1' >L</span>}
                                         {products[item].size.includes('XL') && <span className='border border-gray-300 px-1 mx-1' >XL</span>}
                                         {products[item].size.includes('XXL') && <span className='border border-gray-300 px-1 mx-1' >XXL</span>}
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </Link>

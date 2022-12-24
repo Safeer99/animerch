@@ -31,17 +31,17 @@ const Navbar = () => {
                 </div>
                 <div className="nav mx-auto md:mx-0">
                     <ul className='flex space-x-6 mt-2 md:mt-0 font-bold md:text-md'>
-                        <Link legacyBehavior href={'/tshirts'}><a><li className='hover:text-pink-700'>Tshirts</li></a></Link>
-                        <Link legacyBehavior href={'/hoodies'}><a><li className='hover:text-pink-700'>Hoodies</li></a></Link>
-                        <Link legacyBehavior href={'/stickers'}><a><li className='hover:text-pink-700'>Stickers</li></a></Link>
-                        <Link legacyBehavior href={'/mugs'}><a><li className='hover:text-pink-700'>Mugs</li></a></Link>
+                        <Link legacyBehavior href={'/tshirts'}><a><li className='hover:text-pink-600'>Tshirts</li></a></Link>
+                        <Link legacyBehavior href={'/hoodies'}><a><li className='hover:text-pink-600'>Hoodies</li></a></Link>
+                        <Link legacyBehavior href={'/stickers'}><a><li className='hover:text-pink-600'>Stickers</li></a></Link>
+                        <Link legacyBehavior href={'/cases'}><a><li className='hover:text-pink-600'>Cases</li></a></Link>
                     </ul>
                 </div>
 
             </div>
 
             {/* dropdown menu and login button */}
-            <div className="z-30 cursor-pointer fixed right-9 top-3 mx-3 text-black">
+            <div className="z-30 cursor-pointer fixed right-9 hover:text-pink-400 top-3 mx-3 text-black">
                 <div onMouseOver={() => { setDropDown(true) }} onMouseLeave={() => { setDropDown(false) }}>
                     {token.value && <MdAccountCircle className='text-2xl' />}
                     {token.value && dropDown && <div className="absolute right-0 w-36 py-2 bg-pink-100 rounded-md shadow-xl">
@@ -63,7 +63,7 @@ const Navbar = () => {
             {/* cart */}
             <div onClick={() => setSideBar(false)} className={`fixed left-0 top-0 z-30 w-full h-full ${sideBar ? 'block' : 'hidden'} bg-black opacity-80`}></div>
             <div className='top-3 right-3 z-30 fixed text-black'>
-                <AiOutlineShoppingCart onClick={toggleCart} className='z-30 text-2xl mx-1 cursor-pointer' />
+                <AiOutlineShoppingCart onClick={toggleCart} className='z-30 text-2xl mx-1 hover:text-pink-400 cursor-pointer' />
                 {Object.keys(cart).length !== 0 && <div className='bg-pink-300 w-[18px] h-[18px] pointer-events-none leading-5 pb-2 text-center font-semibold top-1 fixed right-2 rounded-full text-sm'>{Object.keys(cart).length}</div>}
                 <div className={`w-72 h-[100vh] absolute -top-2 ${sideBar ? "-translate-x-60" : "translate-x-12"} transition-transform overflow-y-scroll  z-40  bg-pink-100 px-8 py-10`}>
                     <h2 className='font-bold text-center text-xl'>Shopping Cart</h2>
