@@ -13,11 +13,11 @@ const Forgot = () => {
     return (
         <section>
             <div className="px-6 h-full text-gray-800">
-                <div className="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
+                <div className="flex xl:justify-center lg:justify-between justify-center items-center flex-col h-full g-6">
                     <div className="flex justify-center grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12">
                         <img
                             src="/icon.png"
-                            width="45%"
+                            width="40%"
                             alt="Sample image"
                         />
                     </div>
@@ -30,7 +30,7 @@ const Forgot = () => {
                             <div className="mb-6">
                                 <input
                                     type="text"
-                                    className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-pink-600 focus:outline-none"
+                                    className="form-control block w-[300px] px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out mx-auto focus:text-gray-700 focus:bg-white focus:border-pink-600 focus:outline-none"
                                     id="exampleFormControlInput2"
                                     placeholder="Email address"
                                 />
@@ -39,12 +39,12 @@ const Forgot = () => {
                             <div className="text-center flex justify-center lg:text-left">
                                 <button
                                     type="button"
-                                    className="inline-block px-7 py-3 bg-pink-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-pink-700 hover:shadow-lg focus:bg-pink-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-800 active:shadow-lg transition duration-150 ease-in-out"
+                                    className="inline-block w-[300px] px-7 py-3 bg-pink-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-pink-700 hover:shadow-lg focus:bg-pink-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-pink-800 active:shadow-lg transition duration-150 ease-in-out"
                                 >
                                     Continue
                                 </button>
                             </div>
-                            <div className="flex justify-center my-3">
+                            <div className="flex justify-center my-4">
                                 <Link legacyBehavior href={'/login'}>
                                     <a href="#!" className="px-2 text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out">LogIn</a>
                                 </Link>/

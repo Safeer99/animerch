@@ -1,8 +1,11 @@
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { CartState } from '../context/CartContext'
 
 const Footer = () => {
+
+    const { logout } = CartState();
     return (
         <footer className="text-gray-600 body-font">
             <div className="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
@@ -15,7 +18,7 @@ const Footer = () => {
                     <p className="px-4 mt-2 text-sm text-gray-500">shop the latest products from shopnow now</p>
                 </div>
                 <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
+                    <div className=" sm:w-1/2 w-full px-4">
                         <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">SHOP</h2>
                         <nav className="list-none mb-10">
                             <li>
@@ -32,54 +35,20 @@ const Footer = () => {
                             </li>
                         </nav>
                     </div>
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
+                    <div className="sm:w-1/2 w-full px-4">
+                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">PROFILE</h2>
                         <nav className="list-none mb-10">
                             <li>
-                                <a className="text-gray-600 hover:text-gray-800">First Link</a>
+                                <Link legacyBehavior href={'/myaccount'}><a className="text-gray-600 hover:text-gray-800">Account</a></Link>
                             </li>
                             <li>
-                                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
+                                <Link legacyBehavior href={'/orders'}><a className="text-gray-600 hover:text-gray-800">Orders</a></Link>
                             </li>
                             <li>
-                                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
+                                <Link legacyBehavior href={'/wishlist'}><a className="text-gray-600 hover:text-gray-800">Wishlist</a></Link>
                             </li>
                             <li>
-                                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
-                            </li>
-                        </nav>
-                    </div>
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
-                        <nav className="list-none mb-10">
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">First Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
-                            </li>
-                        </nav>
-                    </div>
-                    <div className="lg:w-1/4 md:w-1/2 w-full px-4">
-                        <h2 className="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CATEGORIES</h2>
-                        <nav className="list-none mb-10">
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">First Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Second Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Third Link</a>
-                            </li>
-                            <li>
-                                <a className="text-gray-600 hover:text-gray-800">Fourth Link</a>
+                                <a onClick={logout} className="text-gray-600 cursor-pointer hover:text-gray-800">Logout</a>
                             </li>
                         </nav>
                     </div>
