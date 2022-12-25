@@ -24,12 +24,12 @@ const Navbar = () => {
         <>
             {/* menu items and logog */}
             <div className={"flex sticky top-0 z-10 text-black bg-white flex-col md:flex-row md:justify-start md:items-center justify-center items-start py-2 shadow-md"}>
-                <div className="logo mx-5">
+                <div className="logo mx-3">
                     <Link legacyBehavior href={'/'}>
-                        <a><Image src="/logo.png" alt="" width={200} height={40} /></a>
+                        <a><Image src="/logo.png" alt="" width={175} height={40} /></a>
                     </Link>
                 </div>
-                <div className="nav mx-auto md:mx-0">
+                <div className="nav pt-2 mx-auto md:mx-3">
                     <ul className='flex space-x-6 mt-2 md:mt-0 font-bold md:text-md'>
                         <Link legacyBehavior href={'/tshirts'}><a><li className='hover:text-pink-600'>Tshirts</li></a></Link>
                         <Link legacyBehavior href={'/hoodies'}><a><li className='hover:text-pink-600'>Hoodies</li></a></Link>
@@ -53,7 +53,7 @@ const Navbar = () => {
                 </div>
                 {!token.value && <Link legacyBehavior href={'/login'}>
                     <a>
-                        <button className='flex text-white border-0 mr-2 py-1 px-3 focus:outline-none rounded text-sm bg-pink-500 hover:bg-pink-600'>
+                        <button className='flex text-white border-0 mr-1 md:mr-2 py-1 px-3 focus:outline-none rounded text-sm bg-pink-500 hover:bg-pink-600'>
                             Log In
                         </button>
                     </a>
@@ -64,10 +64,10 @@ const Navbar = () => {
             <div onClick={() => setSideBar(false)} className={`fixed left-0 top-0 z-30 w-full h-full ${sideBar ? 'block' : 'hidden'} bg-black opacity-80`}></div>
             <div className='top-3 right-3 z-30 fixed text-black'>
                 <AiOutlineShoppingCart onClick={toggleCart} className='z-30 text-2xl mx-1 hover:text-pink-400 cursor-pointer' />
-                {Object.keys(cart).length !== 0 && <div className='bg-pink-300 w-[18px] h-[18px] pointer-events-none leading-5 pb-2 text-center font-semibold top-1 fixed right-2 rounded-full text-sm'>{Object.keys(cart).length}</div>}
-                <div className={`w-72 h-[100vh] absolute -top-2 ${sideBar ? "-translate-x-60" : "translate-x-12"} transition-transform overflow-y-scroll  z-40  bg-pink-100 px-8 py-10`}>
+                {Object.keys(cart).length !== 0 && <div className='bg-pink-300 w-[18px] h-[18px] pointer-events-none leading-5 pb-2 text-center font-semibold top-3 lg:top-2 fixed right-2 rounded-full text-sm'>{Object.keys(cart).length}</div>}
+                <div className={`w-72 h-[100vh] absolute -top-5 ${sideBar ? "-translate-x-60" : "translate-x-12"} transition-transform overflow-y-scroll  z-40  bg-pink-100 px-8 py-10`}>
                     <h2 className='font-bold text-center text-xl'>Shopping Cart</h2>
-                    <span onClick={toggleCart} className="absolute top-2 right-2 cursor-pointer text-pink-500 text-2xl"><AiFillCloseCircle /></span>
+                    <span onClick={toggleCart} className="absolute top-4 right-2 cursor-pointer text-pink-500 text-2xl"><AiFillCloseCircle /></span>
                     <ol className='list-decimal font-semibold'>
                         {Object.keys(cart).length === 0 && <div className='my-4 font-normal'>Your cart is empty</div>}
                         {Object.keys(cart).map((item) => {

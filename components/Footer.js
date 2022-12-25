@@ -15,7 +15,7 @@ const Footer = () => {
                             <Image src="/logo.png" alt="logo" width={200} height={50} />
                         </a>
                     </Link>
-                    <p className="px-4 mt-2 text-sm text-gray-500">shop the latest products from shopnow now</p>
+                    <p className="px-4 mt-2 text-sm text-gray-500">shop the latest anime merchandises from animerch now</p>
                 </div>
                 <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
                     <div className=" sm:w-1/2 w-full px-4">
@@ -56,7 +56,7 @@ const Footer = () => {
             </div>
             <div className="bg-gray-100">
                 <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
-                    <p className="text-gray-500 text-sm text-center sm:text-left">© 2022 shopnow.com — All rights reserved</p>
+                    <p className="text-gray-500 text-sm text-center sm:text-left">© 2022 animerch.com — All rights reserved</p>
                     <span className="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
                         <a className="text-gray-500">
                             <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">

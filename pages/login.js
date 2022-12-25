@@ -77,15 +77,15 @@ const Login = () => {
                     pauseOnHover
                     theme="light"
                 />
-                <div className="flex xl:justify-center lg:justify-between justify-center items-center flex-wrap h-full g-6">
+                <div className="flex xl:justify-center justify-center items-center flex-wrap h-full g-6">
                     <div className="flex justify-center grow-0 shrink-1 md:shrink-0 basis-auto xl:w-6/12 lg:w-6/12 md:w-9/12">
                         <img
                             src="/icon.png"
-                            width="45%"
+                            height="100%"
                             alt="Sample image"
                         />
                     </div>
-                    <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 mt-6 md:mt-12">
+                    <div className="xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 mt-6 md:mt-12">
                         <form onSubmit={handleSubmit}>
                             <div className="flex flex-row items-center justify-center">
                                 <p className="text-lg mb-0 mr-4">Sign in with</p>

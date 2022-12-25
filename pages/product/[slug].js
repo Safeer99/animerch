@@ -92,11 +92,22 @@ const Slug = ({ error, product, variants }) => {
                 progress: undefined,
                 theme: "light",
             });
+        } else if (token.value === null) {
+            toast.warning('Please login in to your account first!!', {
+                position: "top-right",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     }
 
     useEffect(() => {
-        fetchData()
+        if (localStorage.getItem("token")) fetchData()
     }, [])
 
     if (error === 404) {
@@ -120,7 +131,7 @@ const Slug = ({ error, product, variants }) => {
                 <div className="lg:w-4/5 mx-auto flex flex-wrap">
                     <img alt="ecommerce" className="lg:w-1/2 w-full lg:h-96 h-64 m-auto object-contain rounded" src={product.img} />
                     <div className="lg:w-1/2 w-full lg:pl-10 py-6 mt-6 lg:mt-0">
-                        <h2 className="text-sm title-font text-gray-500 tracking-widest">SHOPNOW</h2>
+                        <h2 className="text-sm title-font text-gray-500 tracking-widest">ANIMERCH</h2>
                         <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.title} ({size})</h1>
                         <div className="flex mb-4">
                             {/* <span className="flex items-center">
